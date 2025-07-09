@@ -6,7 +6,7 @@ import {
   TextField,
   Card,
   CardContent,
-  Grid,
+  GridLegacy as Grid,
   Chip,
   Button,
   IconButton,
@@ -38,10 +38,15 @@ const UserList: React.FC = () => {
     try {
       setLoading(true);
       const response = await userAPI.getAllUsers(search);
-      setUsers(response.data);
+      console.log('API Response:', response.data); // Debug log
+      
+      // Fix: Access the data property from the response
+      const usersData = response.data.data || [];
+      setUsers(usersData);
     } catch (error) {
       console.error('Error fetching users:', error);
       setSnackbar({ open: true, message: 'Failed to fetch users', severity: 'error' });
+      setUsers([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -113,8 +118,8 @@ const UserList: React.FC = () => {
         <Typography>Loading users...</Typography>
       ) : (
         <Grid container spacing={3}>
-          {users.map((user) => (
-            <Grid item xs={12} sm={6} md={4} key={user.id}>
+          {Array.isArray(users) && users.map((user) => (
+            <Grid item xs={12} sm={6} md={4} key={user.id} component="div">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardContent>
                   <Box className="flex justify-between items-start mb-3">

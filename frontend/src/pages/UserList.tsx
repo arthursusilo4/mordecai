@@ -78,24 +78,15 @@ const UserList: React.FC = () => {
     }
   };
 
-  const toggleBookmark = (userId: string) => {
-    const newBookmarks = new Set(bookmarkedUsers);
-    if (newBookmarks.has(userId)) {
-      newBookmarks.delete(userId);
-    } else {
-      newBookmarks.add(userId);
-    }
-    setBookmarkedUsers(newBookmarks);
-  };
-
   const openDeleteDialog = (user: User) => {
     setUserToDelete(user);
     setDeleteDialogOpen(true);
   };
 
   return (
-    <Container maxWidth="lg" className="py-8">
-      <Typography variant="h4" component="h1" className="mb-6 text-gray-800 font-bold">
+     <div className="min-h-screen">
+    <Container maxWidth="lg" className="py-8 mb-20">
+      <Typography variant="h4" component="h1" className="pb-6 text-gray-800 font-bold">
         User Management
       </Typography>
 
@@ -126,13 +117,6 @@ const UserList: React.FC = () => {
                     <Typography variant="h6" component="h3" className="text-gray-800">
                       {user.nama}
                     </Typography>
-                    <IconButton
-                      onClick={() => toggleBookmark(user.id)}
-                      size="small"
-                      className="text-primary-500"
-                    >
-                      {bookmarkedUsers.has(user.id) ? <Bookmark /> : <BookmarkBorder />}
-                    </IconButton>
                   </Box>
                   
                   <Typography variant="body2" className="text-gray-600 mb-2">
@@ -209,6 +193,7 @@ const UserList: React.FC = () => {
         </Alert>
       </Snackbar>
     </Container>
+    </div>
   );
 };
 

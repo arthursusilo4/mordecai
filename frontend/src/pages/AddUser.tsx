@@ -252,7 +252,7 @@ const AddUser: React.FC = () => {
                   variant="contained"
                   startIcon={<Save />}
                   disabled={loading}
-                  className="bg-primary-500 hover:bg-primary-600"
+                  className="bg-gradient-to-r from-primary-500 to-primary-500 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-8 py-4 rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                 >
                   {loading ? "Creating..." : "Create User"}
                 </Button>
@@ -262,7 +262,7 @@ const AddUser: React.FC = () => {
                   variant="outlined"
                   startIcon={<Clear />}
                   onClick={handleReset}
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                 >
                   Reset Form
                 </Button>

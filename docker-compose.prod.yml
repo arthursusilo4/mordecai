@@ -1,0 +1,49 @@
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mordecai-backend
+    env_file:
+      - ./backend/.env.prod
+    ports:
+      - "5001:5001"
+    networks:
+      - mordecai-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mordecai-frontend
+    env_file:
+      - ./frontend/.env.prod
+    networks:
+      - mordecai-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: mordecai-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-available:/etc/nginx/sites-available
+      - ./ssl:/etc/nginx/ssl
+      - /var/log/nginx:/var/log/nginx
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - mordecai-network
+    restart: unless-stopped
+
+networks:
+  mordecai-network:
+    driver: bridge

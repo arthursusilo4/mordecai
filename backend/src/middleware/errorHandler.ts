@@ -6,29 +6,32 @@ export const errorHandler = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   console.error('Error:', error);
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     if (error.code === 'P2002') {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Validation Error',
         message: 'Email already exists',
       });
+      return;
     }
     if (error.code === 'P2025') {
-      return res.status(404).json({
+      res.status(404).json({
         error: 'Not Found',
         message: 'User not found',
       });
+      return;
     }
   }
 
   if (error.name === 'ValidationError') {
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Validation Error',
       message: error.message,
     });
+    return;
   }
 
   res.status(500).json({

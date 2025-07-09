@@ -4,7 +4,7 @@ import { validateCreateUser, validateUpdateUser } from '../utils/validation';
 import { CreateUserRequest, UpdateUserRequest } from '../types/user';
 
 class UserController {
-  async getAllUsers(req: Request, res: Response, next: NextFunction) {
+  async getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { search } = req.query;
       
@@ -31,7 +31,7 @@ class UserController {
     }
   }
 
-  async getUserById(req: Request, res: Response, next: NextFunction) {
+  async getUserById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       
@@ -40,10 +40,11 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: 'User not found',
         });
+        return;
       }
 
       res.json({
@@ -55,17 +56,18 @@ class UserController {
     }
   }
 
-  async createUser(req: Request, res: Response, next: NextFunction) {
+  async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userData: CreateUserRequest = req.body;
       
       const validationErrors = validateCreateUser(userData);
       if (validationErrors.length > 0) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'Validation failed',
           errors: validationErrors,
         });
+        return;
       }
 
       const user = await prisma.user.create({
@@ -82,18 +84,19 @@ class UserController {
     }
   }
 
-  async updateUser(req: Request, res: Response, next: NextFunction) {
+  async updateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const userData: UpdateUserRequest = req.body;
       
       const validationErrors = validateUpdateUser(userData);
       if (validationErrors.length > 0) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'Validation failed',
           errors: validationErrors,
         });
+        return;
       }
 
       const user = await prisma.user.update({
@@ -111,7 +114,7 @@ class UserController {
     }
   }
 
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
+  async deleteUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       
